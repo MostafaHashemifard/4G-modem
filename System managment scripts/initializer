@@ -1,0 +1,14 @@
+#!/bin/sh
+
+gsmModule="$(grep "gsm" /etc/config/boardconfig | cut -d "=" -f 2)"
+
+if [[ $gsmModule == "EC25" || $gsmModule == "ZM618" || $gsmModule == "YJ106S" ]]
+then
+	if [[ "$(grep "BROADBAND3" /etc/config/network)" ]]
+	then
+		uci delete network.BROADBAND3
+		uci commit network
+		sleep 1
+		/etc/init.d/network restart
+	fi
+fi
